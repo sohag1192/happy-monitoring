@@ -1,0 +1,14 @@
+- job_name: 'mikrotik'
+    static_configs:
+      - targets:
+        - 172.20.21.17  # SNMP device.
+    metrics_path: /snmp
+    params:
+      module: [mikrotik]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 172.20.21.30:9116
