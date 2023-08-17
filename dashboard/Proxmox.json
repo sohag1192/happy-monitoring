@@ -101,6 +101,8 @@
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT last(\"uptime\") FROM \"system\" WHERE (\"nodename\" =~ /^$hostname$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -194,6 +196,8 @@
           "measurement": "cpustat",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT \"cpu\" FROM \"cpustat\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -406,6 +410,8 @@
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"memused\") / 1073741824 FROM \"memory\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -621,6 +627,8 @@
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"memtotal\") FROM \"memory\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -676,7 +684,7 @@
       "id": 8,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -712,6 +720,8 @@
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"memfree\") FROM \"memory\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -990,6 +1000,8 @@
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT last(\"uptime\") AS \"Uptime\", \"cpu\" AS \"Cpu %\", \"cpus\" AS \"Cpus\", \"mem\" AS \"RAM\", \"disk\" AS \"Disk\", \"status\" AS \"Status\" FROM \"system\" WHERE (\"nodename\" =~ /^$hostname$/) AND $timeFilter GROUP BY \"host\", \"object\" LIMIT 1",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
           "select": [
@@ -1194,6 +1206,8 @@
           "measurement": "cpustat",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"cpu\") FROM \"cpustat\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1452,6 +1466,8 @@
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"memtotal\") AS \"total\", mean(\"memused\") AS \"used\", mean(\"memfree\") AS \"free\" FROM \"memory\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
           "select": [
@@ -1625,6 +1641,8 @@
           "measurement": "nics",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT non_negative_derivative(last(\"receive\"), 1s) *8 AS \"Download\", non_negative_derivative(last(\"transmit\"), 1s) *8 AS \"Upload\" FROM \"nics\" WHERE (\"host\" =~ /^$hostname$/ AND \"instance\" =~ /^$interfaces$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
           "select": [
@@ -1838,6 +1856,8 @@
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"cpu\") FROM \"system\" WHERE (\"nodename\" =~ /^$hostname$/) AND $timeFilter GROUP BY time($__interval), \"host\" fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1978,6 +1998,8 @@
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"mem\") FROM \"system\" WHERE (\"nodename\" =~ /^$hostname$/) AND $timeFilter GROUP BY time($__interval), \"host\" fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2120,6 +2142,8 @@
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT non_negative_derivative(last(\"netin\"), 1s) *8 FROM \"system\" WHERE (\"nodename\" =~ /^$hostname$/) AND $timeFilter GROUP BY time($__interval), \"host\" fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2275,6 +2299,8 @@
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT non_negative_derivative(last(\"netout\"), 1s) *8 FROM \"system\" WHERE (\"nodename\" =~ /^$hostname$/) AND $timeFilter GROUP BY time($__interval), \"host\" fill(null)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2429,6 +2455,6 @@
   "timezone": "",
   "title": "6. Proxmox-Server",
   "uid": "w0PEf_ynk",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }
