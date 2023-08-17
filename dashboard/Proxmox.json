@@ -24,14 +24,14 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 12,
+  "id": 13,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "fieldConfig": {
         "defaults": {
@@ -77,14 +77,27 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
@@ -97,14 +110,18 @@
                   "uptime"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
               }
             ]
           ],
           "tags": [
             {
-              "key": "host::tag",
+              "key": "nodename",
               "operator": "=~",
-              "value": "/^$server$/"
+              "value": "/^$hostname$/"
             }
           ]
         }
@@ -115,13 +132,14 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "O0SxTZgSk"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 2,
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -165,12 +183,12 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "O0SxTZgSk"
           },
           "groupBy": [],
           "measurement": "cpustat",
@@ -188,20 +206,17 @@
               }
             ]
           ],
-          "tags": [
-            {
-              "key": "host::tag",
-              "operator": "=~",
-              "value": "/^$server$/"
-            }
-          ]
+          "tags": []
         }
       ],
       "title": "Cpu Usage",
       "type": "gauge"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${database}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -251,12 +266,12 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -276,7 +291,7 @@
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"memused\")/mean(\"memtotal\") * 100 FROM \"memory\" WHERE (\"host\" =~ /^$server$/) AND $timeFilter GROUP BY time($__interval), host fill(null)",
+          "query": "SELECT mean(\"memused\")/mean(\"memtotal\")*100 FROM \"memory\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -303,7 +318,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "description": "",
       "fieldConfig": {
@@ -367,14 +382,27 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
@@ -389,6 +417,10 @@
                 "type": "field"
               },
               {
+                "params": [],
+                "type": "mean"
+              },
+              {
                 "params": [
                   "/ 1073741824"
                 ],
@@ -396,13 +428,7 @@
               }
             ]
           ],
-          "tags": [
-            {
-              "key": "host::tag",
-              "operator": "=~",
-              "value": "/^$server$/"
-            }
-          ]
+          "tags": []
         }
       ],
       "title": "RAM Used",
@@ -411,7 +437,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "fieldConfig": {
         "defaults": {
@@ -461,12 +487,12 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -486,7 +512,7 @@
           "measurement": "system",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"used\")/mean(\"total\") FROM \"system\" WHERE (\"type\" = 'dir' AND \"nodename\" =~ /^$server$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "query": "SELECT mean(\"used\")/mean(\"total\") FROM \"system\" WHERE (\"type\" = 'dir' AND \"nodename\" =~ /^$hostname$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -519,13 +545,13 @@
           ]
         }
       ],
-      "title": "Storage usage",
+      "title": "Directory",
       "type": "gauge"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "fieldConfig": {
         "defaults": {
@@ -571,14 +597,27 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
@@ -591,16 +630,14 @@
                   "memtotal"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
-          "tags": [
-            {
-              "key": "host::tag",
-              "operator": "=~",
-              "value": "/^$server$/"
-            }
-          ]
+          "tags": []
         }
       ],
       "title": "Total RAM",
@@ -609,7 +646,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "fieldConfig": {
         "defaults": {
@@ -651,14 +688,27 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
@@ -671,16 +721,14 @@
                   "memfree"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
-          "tags": [
-            {
-              "key": "host::tag",
-              "operator": "=~",
-              "value": "/^$server$/"
-            }
-          ]
+          "tags": []
         }
       ],
       "title": "RAM Available",
@@ -689,7 +737,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "description": "",
       "fieldConfig": {
@@ -699,9 +747,7 @@
           },
           "custom": {
             "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -821,11 +867,8 @@
                 ]
               },
               {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "color-background"
-                }
+                "id": "custom.displayMode",
+                "value": "color-background"
               }
             ]
           },
@@ -872,11 +915,8 @@
             },
             "properties": [
               {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "color-background"
-                }
+                "id": "custom.displayMode",
+                "value": "color-background"
               },
               {
                 "id": "mappings",
@@ -915,9 +955,7 @@
       },
       "id": 10,
       "options": {
-        "cellHeight": "sm",
         "footer": {
-          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -927,12 +965,12 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -1046,9 +1084,9 @@
           ],
           "tags": [
             {
-              "key": "nodename::tag",
+              "key": "nodename",
               "operator": "=~",
-              "value": "/^$server$/"
+              "value": "/^$hostname$/"
             }
           ]
         }
@@ -1060,7 +1098,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "uomvmJlVz"
       },
       "gridPos": {
         "h": 1,
@@ -1074,7 +1112,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+            "uid": "uomvmJlVz"
           },
           "refId": "A"
         }
@@ -1083,13 +1121,141 @@
       "type": "row"
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${database}"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "hiddenSeries": false,
+      "id": 20,
+      "legend": {
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "9.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:721",
+          "alias": "CPU Usage",
+          "color": "#B877D9"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "CPU Usage",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${database}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "cpustat",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpu"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Cpu Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:2501",
+          "format": "percentunit",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:2502",
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
       "aliasColors": {
         "ram usage (%)": "semi-dark-blue"
       },
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {},
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${database}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "percent"
@@ -1102,7 +1268,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 16,
@@ -1122,7 +1288,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1135,7 +1301,7 @@
           "alias": "ram usage (%)",
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -1155,7 +1321,7 @@
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"memused\")/mean(\"memtotal\") * 100 FROM \"memory\" WHERE (\"host\" =~ /^$server$/) AND $timeFilter GROUP BY time($__interval), host fill(null)",
+          "query": "SELECT mean(\"memused\")/mean(\"memtotal\")*100 FROM \"memory\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1219,7 +1385,7 @@
       "dashes": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1233,7 +1399,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 19,
@@ -1255,7 +1421,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1267,9 +1433,22 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "measurement": "memory",
           "orderByTime": "ASC",
           "policy": "default",
@@ -1282,6 +1461,10 @@
                   "memtotal"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               },
               {
                 "params": [
@@ -1298,6 +1481,10 @@
                 "type": "field"
               },
               {
+                "params": [],
+                "type": "mean"
+              },
+              {
                 "params": [
                   "used"
                 ],
@@ -1312,6 +1499,10 @@
                 "type": "field"
               },
               {
+                "params": [],
+                "type": "mean"
+              },
+              {
                 "params": [
                   "free"
                 ],
@@ -1319,13 +1510,7 @@
               }
             ]
           ],
-          "tags": [
-            {
-              "key": "host::tag",
-              "operator": "=~",
-              "value": "/^$server$/"
-            }
-          ]
+          "tags": []
         }
       ],
       "thresholds": [],
@@ -1367,121 +1552,7 @@
       "dashes": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 19
-      },
-      "hiddenSeries": false,
-      "id": 20,
-      "legend": {
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": false,
-        "show": false,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "connected",
-      "options": {
-        "alertThreshold": false
-      },
-      "percentage": false,
-      "pluginVersion": "9.5.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:721",
-          "alias": "CPU Usage",
-          "color": "#B877D9"
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "CPU Usage",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "3vGLz9y7z"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "cpustat",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "cpu"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "host::tag",
-              "operator": "=~",
-              "value": "/^$server$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Cpu Usage",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:2501",
-          "format": "percentunit",
-          "logBase": 1,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:2502",
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "${database}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1495,7 +1566,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 24
       },
       "hiddenSeries": false,
       "id": 25,
@@ -1517,7 +1588,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1535,7 +1606,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -1622,13 +1693,13 @@
             {
               "key": "host",
               "operator": "=~",
-              "value": "/^$server$/"
+              "value": "/^$hostname$/"
             },
             {
               "condition": "AND",
               "key": "instance",
               "operator": "=~",
-              "value": "/^$nics$/"
+              "value": "/^$interfaces$/"
             }
           ]
         }
@@ -1669,13 +1740,13 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+        "uid": "uomvmJlVz"
       },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 32
       },
       "id": 18,
       "panels": [],
@@ -1683,7 +1754,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+            "uid": "uomvmJlVz"
           },
           "refId": "A"
         }
@@ -1696,14 +1767,17 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {},
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${database}"
+      },
       "fill": 1,
       "fillGradient": 1,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 33
       },
       "hiddenSeries": false,
       "id": 12,
@@ -1726,7 +1800,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1739,7 +1813,7 @@
           "alias": "$tag_host",
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -1784,7 +1858,7 @@
             {
               "key": "nodename",
               "operator": "=~",
-              "value": "/^$server$/"
+              "value": "/^$hostname$/"
             }
           ]
         }
@@ -1827,7 +1901,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {},
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${database}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "bytes"
@@ -1840,7 +1917,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 41
       },
       "hiddenSeries": false,
       "id": 28,
@@ -1863,7 +1940,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1876,7 +1953,7 @@
           "alias": "$tag_host",
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -1921,14 +1998,14 @@
             {
               "key": "nodename",
               "operator": "=~",
-              "value": "/^$server$/"
+              "value": "/^$hostname$/"
             }
           ]
         }
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "RAM Usage By CT / VM",
+      "title": "Memory Usage By CT / VM",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1965,7 +2042,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {},
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${database}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "bps"
@@ -1978,7 +2058,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 49
       },
       "hiddenSeries": false,
       "id": 22,
@@ -2001,7 +2081,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2014,7 +2094,7 @@
           "alias": "$tag_host",
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -2072,7 +2152,7 @@
             {
               "key": "nodename",
               "operator": "=~",
-              "value": "/^$server$/"
+              "value": "/^$hostname$/"
             }
           ]
         }
@@ -2116,7 +2196,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {},
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${database}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "bps"
@@ -2129,7 +2212,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 57
       },
       "hiddenSeries": false,
       "id": 29,
@@ -2153,7 +2236,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2166,7 +2249,7 @@
           "alias": "$tag_host",
           "datasource": {
             "type": "influxdb",
-            "uid": "3vGLz9y7z"
+            "uid": "${database}"
           },
           "groupBy": [
             {
@@ -2224,7 +2307,7 @@
             {
               "key": "nodename",
               "operator": "=~",
-              "value": "/^$server$/"
+              "value": "/^$hostname$/"
             }
           ]
         }
@@ -2263,7 +2346,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 38,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2271,20 +2354,40 @@
       {
         "current": {
           "selected": false,
-          "text": "ripon",
-          "value": "ripon"
+          "text": "ProxmoxDB",
+          "value": "ProxmoxDB"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Database",
+        "multi": false,
+        "name": "database",
+        "options": [],
+        "query": "influxdb",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "smartonlinebd",
+          "value": "smartonlinebd"
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+          "uid": "${database}"
         },
-        "definition": "SHOW TAG VALUES FROM system WITH KEY=host WHERE object='nodes'",
+        "definition": "show tag values from system with key=\"nodename\"",
         "hide": 2,
-        "includeAll": true,
+        "includeAll": false,
+        "label": "Host-Name",
         "multi": false,
-        "name": "server",
+        "name": "hostname",
         "options": [],
-        "query": "SHOW TAG VALUES FROM system WITH KEY=host WHERE object='nodes'",
+        "query": "show tag values from system with key=\"nodename\"",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2292,22 +2395,24 @@
         "type": "query"
       },
       {
+        "allValue": "All",
         "current": {
           "selected": false,
-          "text": "ens33",
-          "value": "ens33"
+          "text": "eno1",
+          "value": "eno1"
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "df884451-8fbe-48f5-9dc7-33abfcab55e5"
+          "uid": "${database}"
         },
-        "definition": "SHOW TAG VALUES FROM nics WITH KEY=instance WHERE object='nodes' ",
+        "definition": "show tag values from nics with key=\"instance\" where instance='eno1'",
         "hide": 2,
-        "includeAll": true,
+        "includeAll": false,
+        "label": "Interfaces",
         "multi": false,
-        "name": "nics",
+        "name": "interfaces",
         "options": [],
-        "query": "SHOW TAG VALUES FROM nics WITH KEY=instance WHERE object='nodes' ",
+        "query": "show tag values from nics with key=\"instance\" where instance='eno1'",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2317,13 +2422,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Proxmox",
+  "title": "6. Proxmox-Server",
   "uid": "w0PEf_ynk",
-  "version": 15,
+  "version": 14,
   "weekStart": ""
 }
